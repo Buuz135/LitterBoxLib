@@ -1,0 +1,7 @@
+{
+  "parent": "litterboxlib:block/util_cube_glow_2_all",
+  "textures": {
+    "all": "litterboxlib:blocks/body",
+    "glow": "litterboxlib:blocks/frame"
+  }
+}

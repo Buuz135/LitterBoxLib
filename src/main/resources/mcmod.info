@@ -1,0 +1,19 @@
+[
+  {
+    "modid": "litterboxlib",
+    "name": "Litterboxlib",
+    "description": "Just a lib",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "Buuz135"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": [
+    ]
+  }
+]

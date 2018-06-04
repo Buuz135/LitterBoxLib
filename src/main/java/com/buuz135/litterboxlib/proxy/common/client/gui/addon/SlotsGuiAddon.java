@@ -47,6 +47,16 @@ public class SlotsGuiAddon extends BasicGuiAddon {
     }
 
     @Override
+    public int getXSize() {
+        return handler.getXSize() * SLOT_SIZE.getKey();
+    }
+
+    @Override
+    public int getYSize() {
+        return handler.getYSize() * SLOT_SIZE.getValue();
+    }
+
+    @Override
     public boolean isInside(GuiTile container, int mouseX, int mouseY) {
         return false;
     }

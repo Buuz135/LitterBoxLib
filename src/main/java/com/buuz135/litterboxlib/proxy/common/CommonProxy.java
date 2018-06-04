@@ -4,6 +4,7 @@ import com.buuz135.litterboxlib.Litterboxlib;
 import com.buuz135.litterboxlib.annotation.RegisteringBlock;
 import com.buuz135.litterboxlib.annotation.RegisteringItem;
 import com.buuz135.litterboxlib.api.IRegisterable;
+import com.buuz135.litterboxlib.proxy.common.network.ButtonClickedMessage;
 import com.buuz135.litterboxlib.util.AnnotationUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -34,6 +35,8 @@ public class CommonProxy {
 
         MinecraftForge.EVENT_BUS.register(this);
         NetworkRegistry.INSTANCE.registerGuiHandler(Litterboxlib.INSTANCE, new GuiHandler());
+        int id = 0;
+        Litterboxlib.NETWORK.registerMessage(ButtonClickedMessage.Handler.class, ButtonClickedMessage.class, ++id, Side.SERVER);
     }
 
     public void onInit(FMLInitializationEvent event) {

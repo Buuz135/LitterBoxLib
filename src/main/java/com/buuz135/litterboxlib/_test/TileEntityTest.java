@@ -2,8 +2,10 @@ package com.buuz135.litterboxlib._test;
 
 import com.buuz135.litterboxlib.annotation.NBTSave;
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.BasicButtonAddon;
+import com.buuz135.litterboxlib.proxy.common.client.gui.addon.IGuiAddon;
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.PrettyColor;
 import com.buuz135.litterboxlib.proxy.common.tile.TileEntitySided;
+import com.buuz135.litterboxlib.proxy.common.tile.container.PosButton;
 import com.buuz135.litterboxlib.proxy.common.tile.container.PosFluidTank;
 import com.buuz135.litterboxlib.proxy.common.tile.container.PosInventoryHandler;
 import net.minecraft.init.Blocks;
@@ -11,6 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class TileEntityTest extends TileEntitySided implements ITickable {
@@ -43,9 +47,15 @@ public class TileEntityTest extends TileEntitySided implements ITickable {
         lava = new PosFluidTank(8000,40, 20).setTile(this).setFillFilter(fluidStack -> fluidStack.getFluid().equals(FluidRegistry.LAVA));
         this.addTank(lava);
 
-        this.addButton(new BasicButtonAddon(5,5).setServerRunnable(compound -> {
-            System.out.println(randomNumber);
-            System.out.println(compound);
+        PosButton button = new PosButton(10, 10, 16, 16) {
+            @Override
+            public List<? extends IGuiAddon> getGuiAddons() {
+                return Collections.singletonList(new BasicButtonAddon(this));
+            }
+        };
+        this.addButton(button.setPredicate(compound -> {
+            System.out.println("ID: " + button.getId());
+            System.out.println("LAVA:" + lava.getFluidAmount());
             return true;
         }));
     }

@@ -3,13 +3,11 @@ package com.buuz135.litterboxlib.proxy.common.client.gui.addon;
 import com.buuz135.litterboxlib.proxy.common.client.gui.GuiTile;
 import com.buuz135.litterboxlib.proxy.common.tile.container.PosFluidTank;
 import javafx.util.Pair;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.opengl.GL11;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -59,7 +57,13 @@ public class TankGuiAddon extends BasicGuiAddon {
     }
 
     @Override
-    public boolean isInside(GuiTile container, int mouseX, int mouseY) {
-        return mouseX > tank.getPosX() + container.getGuiLeft() && mouseY > tank.getPosY()+ container.getGuiTop() && mouseX < tank.getPosX()+ TANK_SIZE.getKey()+ container.getGuiLeft() && mouseY < tank.getPosY()+TANK_SIZE.getValue()+ container.getGuiTop();
+    public int getXSize() {
+        return TANK_SIZE.getKey();
     }
+
+    @Override
+    public int getYSize() {
+        return TANK_SIZE.getValue();
+    }
+
 }

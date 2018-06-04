@@ -1,8 +1,8 @@
 package com.buuz135.litterboxlib.proxy.common.tile;
 
-import com.buuz135.litterboxlib.proxy.common.client.gui.addon.BasicButtonAddon;
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.IGuiAddon;
 import com.buuz135.litterboxlib.proxy.common.tile.container.*;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -28,9 +28,13 @@ public class TileEntitySided extends TileEntitySaving {
         multiTankHandler.addTank(tank);
     }
 
-    public void addButton(BasicButtonAddon buttonAddon){
+    public void addButton(PosButton buttonAddon) {
         if (buttonHandler == null) buttonHandler = new ButtonHandler();
         buttonHandler.addButton(buttonAddon);
+    }
+
+    public void handleButton(int id, NBTTagCompound compound) {
+        buttonHandler.clickButton(id, compound);
     }
 
     @Override

@@ -1,19 +1,21 @@
 package com.buuz135.litterboxlib.proxy.common.client.gui.addon;
 
+import com.buuz135.litterboxlib.Litterboxlib;
 import com.buuz135.litterboxlib.proxy.common.client.gui.GuiTile;
-import lombok.Getter;
-import net.minecraft.nbt.NBTTagCompound;
+import com.buuz135.litterboxlib.proxy.common.client.gui.IClickable;
+import com.buuz135.litterboxlib.proxy.common.client.gui.IGuiInformation;
+import com.buuz135.litterboxlib.proxy.common.network.ButtonClickedMessage;
+import com.buuz135.litterboxlib.proxy.common.tile.container.PosButton;
 
 import java.util.List;
-import java.util.function.Predicate;
 
-public class BasicButtonAddon extends BasicGuiAddon {
+public class BasicButtonAddon extends BasicGuiAddon implements IClickable {
 
-    @Getter private Predicate<NBTTagCompound> serverPredicate;
-    @Getter private int id;
+    private PosButton button;
 
-    public BasicButtonAddon(int posX, int posY) {
-        super(posX, posY);
+    public BasicButtonAddon(PosButton posButton) {
+        super(posButton.getPosX(), posButton.getPosY());
+        this.button = posButton;
     }
 
     @Override
@@ -31,24 +33,19 @@ public class BasicButtonAddon extends BasicGuiAddon {
         return null;
     }
 
+
     @Override
-    public boolean isInside(GuiTile container, int mouseX, int mouseY) {
-        return false;
+    public void handleClick(IGuiInformation information, int guiX, int guiY, int mouseX, int mouseY) {
+        Litterboxlib.NETWORK.sendToServer(new ButtonClickedMessage(information.getBlockPos(), button.getId()));
     }
 
-    public BasicButtonAddon setServerRunnable(Predicate<NBTTagCompound> predicate){
-        this.serverPredicate = predicate;
-        return this;
+    @Override
+    public int getXSize() {
+        return button.getSizeX();
     }
 
-    public void onButtonClicked(NBTTagCompound compound){
-        if (serverPredicate != null){
-            serverPredicate.test(compound);
-        }
-    }
-
-    public BasicButtonAddon setId(int id){
-        this.id = id;
-        return this;
+    @Override
+    public int getYSize() {
+        return button.getSizeY();
     }
 }

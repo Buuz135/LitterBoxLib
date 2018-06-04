@@ -4,24 +4,25 @@ import com.buuz135.litterboxlib.Litterboxlib;
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.IGuiAddon;
 import com.buuz135.litterboxlib.proxy.common.tile.TileEntitySided;
 import com.buuz135.litterboxlib.proxy.common.tile.container.ContainerTile;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import net.minecraft.world.World;
 
-public class GuiTile extends GuiContainer {
+import java.io.IOException;
+
+public class GuiTile extends GuiContainer implements IGuiInformation {
 
     public static final ResourceLocation BG_TEXTURE = new ResourceLocation(Litterboxlib.MOD_ID, "textures/gui/background.png");
 
     private final InventoryPlayer playerInv;
     private final ContainerTile containerTile;
+
+    private int x;
+    private int y;
 
     public GuiTile(ContainerTile inventorySlotsIn, InventoryPlayer playerInv) {
         super(inventorySlotsIn);
@@ -35,8 +36,8 @@ public class GuiTile extends GuiContainer {
         //BG RENDERING
         GlStateManager.color(1, 1, 1, 1);
         mc.getTextureManager().bindTexture(BG_TEXTURE);
-        int x = (width - xSize) / 2;
-        int y = (height - ySize) / 2;
+        x = (width - xSize) / 2;
+        y = (height - ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
         //GUI ADDON RENDERING
 
@@ -54,8 +55,8 @@ public class GuiTile extends GuiContainer {
         String name = new TextComponentTranslation(sided.getWorld().getBlockState(sided.getPos()).getBlock().getUnlocalizedName()).getFormattedText();
         fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 0x404040);
         //fontRenderer.drawString(playerInv.getDisplayName().getUnformattedText(), 8, ySize - 94, 0x404040);
-        int x = (width - xSize) / 2;
-        int y = (height - ySize) / 2;
+        x = (width - xSize) / 2;
+        y = (height - ySize) / 2;
         for (IGuiAddon iGuiAddon : containerTile.getTile().getGuiAddons()) {
             GlStateManager.pushMatrix();
             mc.getTextureManager().bindTexture(BG_TEXTURE);
@@ -64,7 +65,7 @@ public class GuiTile extends GuiContainer {
         }
         renderHoveredToolTip(mouseX - x, mouseY - y);
         for (IGuiAddon iGuiAddon : containerTile.getTile().getGuiAddons()) {
-            if (iGuiAddon.isInside(this, mouseX, mouseY) && iGuiAddon.getTooltipLines() != null && !iGuiAddon.getTooltipLines().isEmpty()){
+            if (iGuiAddon.isInside(this, mouseX - x, mouseY - y) && iGuiAddon.getTooltipLines() != null && !iGuiAddon.getTooltipLines().isEmpty()) {
                 GlStateManager.pushMatrix();
                 drawHoveringText(iGuiAddon.getTooltipLines(), mouseX-this.getGuiLeft(), mouseY-this.getGuiTop());
                 GlStateManager.popMatrix();
@@ -76,5 +77,21 @@ public class GuiTile extends GuiContainer {
         this.drawGradientRect(left, top, sizeX + left, sizeY + top, color, color);
     }
 
+    @Override
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+        containerTile.getTile().getGuiAddons().stream().filter(iGuiAddon -> iGuiAddon instanceof IClickable && iGuiAddon.isInside(this, mouseX - x, mouseY - y))
+                .forEach(iGuiAddon -> ((IClickable) iGuiAddon).handleClick(this, x, y, mouseX, mouseY));
 
+    }
+
+    @Override
+    public BlockPos getBlockPos() {
+        return containerTile.getTile().getPos();
+    }
+
+    @Override
+    public World getWorld() {
+        return containerTile.getTile().getWorld();
+    }
 }

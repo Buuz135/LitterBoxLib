@@ -1,20 +1,16 @@
 package com.buuz135.litterboxlib._test;
 
 import com.buuz135.litterboxlib.annotation.NBTSave;
-import com.buuz135.litterboxlib.proxy.common.client.gui.addon.BasicButtonAddon;
-import com.buuz135.litterboxlib.proxy.common.client.gui.addon.IGuiAddon;
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.PrettyColor;
 import com.buuz135.litterboxlib.proxy.common.tile.TileEntitySided;
-import com.buuz135.litterboxlib.proxy.common.tile.container.PosButton;
 import com.buuz135.litterboxlib.proxy.common.tile.container.PosFluidTank;
-import com.buuz135.litterboxlib.proxy.common.tile.container.PosInventoryHandler;
+import com.buuz135.litterboxlib.proxy.common.tile.container.handler.FaceMode;
+import com.buuz135.litterboxlib.proxy.common.tile.container.handler.items.PosInventoryHandler;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraftforge.fluids.FluidRegistry;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 public class TileEntityTest extends TileEntitySided implements ITickable {
@@ -34,7 +30,7 @@ public class TileEntityTest extends TileEntitySided implements ITickable {
 
     public TileEntityTest() {
         randomNumber = 0;
-        handler = new PosInventoryHandler("test", 15 + 18 * 3, 20+20+5, 4).setRange(2, 2).setColor(PrettyColor.BLUE).setTile(this).setOutputFilter((stack, integer) -> false);
+        handler = new PosInventoryHandler("test", 15, 20 + 5, 4).setRange(2, 2).setColor(PrettyColor.BLUE).setTile(this).setOutputFilter((stack, integer) -> false);
         addInventory(handler);
 
         handler2 = new PosInventoryHandler("test2", 20 + 18 * 3, 20, 1).setColor(PrettyColor.YELLOW).setTile(this).setInputFilter((stack, integer) -> stack.isItemEqual(new ItemStack(Blocks.CHEST)));
@@ -42,22 +38,27 @@ public class TileEntityTest extends TileEntitySided implements ITickable {
 
         handler3 = new PosInventoryHandler("test3", 20 + 18 * 5+10, 30, 4).setRange(2, 2).setColor(PrettyColor.YELLOW).setTile(this).setBigSlot().setOutputFilter((stack, integer) -> stack.isItemEqual(new ItemStack(Blocks.STONE)));
         addInventory(handler3);
-        water = new PosFluidTank(8000,20,20).setTile(this).setFillFilter(fluidStack -> fluidStack.getFluid().equals(FluidRegistry.WATER));
-        this.addTank(water);
-        lava = new PosFluidTank(8000,40, 20).setTile(this).setFillFilter(fluidStack -> fluidStack.getFluid().equals(FluidRegistry.LAVA));
-        this.addTank(lava);
-
-        PosButton button = new PosButton(10, 10, 16, 16) {
-            @Override
-            public List<? extends IGuiAddon> getGuiAddons() {
-                return Collections.singletonList(new BasicButtonAddon(this));
+        for (PosInventoryHandler hand : new PosInventoryHandler[]{handler, handler2, handler3}) {
+            for (EnumFacing facing : EnumFacing.values()) {
+                hand.getFacingModes().put(facing, FaceMode.NONE);
             }
-        };
-        this.addButton(button.setPredicate(compound -> {
-            System.out.println("ID: " + button.getId());
-            System.out.println("LAVA:" + lava.getFluidAmount());
-            return true;
-        }));
+        }
+//        water = new PosFluidTank(8000,20,20).setTile(this).setFillFilter(fluidStack -> fluidStack.getFluid().equals(FluidRegistry.WATER));
+//        this.addTank(water);
+//        lava = new PosFluidTank(8000,40, 20).setTile(this).setFillFilter(fluidStack -> fluidStack.getFluid().equals(FluidRegistry.LAVA));
+//        this.addTank(lava);
+//
+//        PosButton button = new PosButton(10, 10, 16, 16) {
+//            @Override
+//            public List<? extends IGuiAddon> getGuiAddons() {
+//                return Collections.singletonList(new BasicButtonAddon(this));
+//            }
+//        };
+//        this.addButton(button.setPredicate(compound -> {
+//            System.out.println("ID: " + button.getId());
+//            System.out.println("LAVA:" + lava.getFluidAmount());
+//            return true;
+//        }));
     }
 
     @Override

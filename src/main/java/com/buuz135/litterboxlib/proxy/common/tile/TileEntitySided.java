@@ -1,7 +1,12 @@
 package com.buuz135.litterboxlib.proxy.common.tile;
 
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.IGuiAddon;
-import com.buuz135.litterboxlib.proxy.common.tile.container.*;
+import com.buuz135.litterboxlib.proxy.common.tile.container.ButtonHandler;
+import com.buuz135.litterboxlib.proxy.common.tile.container.MultiTankHandler;
+import com.buuz135.litterboxlib.proxy.common.tile.container.PosButton;
+import com.buuz135.litterboxlib.proxy.common.tile.container.PosFluidTank;
+import com.buuz135.litterboxlib.proxy.common.tile.container.handler.items.MultiInventoryHandler;
+import com.buuz135.litterboxlib.proxy.common.tile.container.handler.items.PosInventoryHandler;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -39,7 +44,8 @@ public class TileEntitySided extends TileEntitySaving {
 
     @Override
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && multiInventoryHandler != null) return true;
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && multiInventoryHandler != null && multiInventoryHandler.getCapabilityForSide(facing).getSlots() > 0)
+            return true;
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && multiTankHandler != null) return true;
         return super.hasCapability(capability, facing);
     }
@@ -47,7 +53,8 @@ public class TileEntitySided extends TileEntitySaving {
     @Nullable
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return (T) multiInventoryHandler;
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(multiInventoryHandler.getCapabilityForSide(facing));
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) return (T) multiTankHandler;
         return super.getCapability(capability, facing);
     }

@@ -71,6 +71,7 @@ public class NBTManager {
             for (Field field : tileFieldList.get(entity.getClass())) {
                 NBTSave save = field.getAnnotation(NBTSave.class);
                 try {
+                    if (field.get(entity) == null) continue;
                     compound = handleNBTWrite(compound, save.value().isEmpty() ? field.getName() : save.value(), field.get(entity));
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
@@ -126,8 +127,10 @@ public class NBTManager {
      * @return
      */
     private Object handleNBTRead(NBTTagCompound compound, String name, Object value) {
+        if (value == null) return value;
         for (INBTHandler handler : handlerList) {
             if (handler.isClassValid(value.getClass())) {
+                if (!compound.hasKey(name)) continue;
                 Object readedValue = handler.readFromNBT(compound, name, value);
                 if (readedValue != null) {
                     return readedValue;

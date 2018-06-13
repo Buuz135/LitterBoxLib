@@ -1,7 +1,7 @@
 package com.buuz135.litterboxlib.proxy.common.client.gui.addon;
 
 import com.buuz135.litterboxlib.proxy.common.client.gui.GuiTile;
-import com.buuz135.litterboxlib.proxy.common.tile.container.PosInventoryHandler;
+import com.buuz135.litterboxlib.proxy.common.tile.container.handler.items.PosInventoryHandler;
 import javafx.util.Pair;
 
 import java.util.List;

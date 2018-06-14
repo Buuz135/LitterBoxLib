@@ -13,6 +13,10 @@ import javax.annotation.Nullable;
 
 public class TileEntitySaving extends TileEntity {
 
+    public void handleClientPacket(String id, NBTTagCompound information) {
+
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         NBTManager.getInstance().readTileEntity(this, compound);

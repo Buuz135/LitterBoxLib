@@ -19,17 +19,17 @@ public class ButtonHandler implements IGuiAddonProvider {
         basicButtonAddons.add(buttonAddon.setId(basicButtonAddons.size()));
     }
 
-    public void clickButton(int id, NBTTagCompound compound){
+    public void clickButton(int id, NBTTagCompound compound) {
         basicButtonAddons.stream().filter(buttonAddon -> buttonAddon.getId() == id).forEach(buttonAddon -> buttonAddon.onButtonClicked(compound));
     }
 
     @Override
     public List<? extends IGuiAddon> getGuiAddons() {
         List<IGuiAddon> addons = new ArrayList<>();
-        for (PosButton basicButtonAddon : basicButtonAddons) {
-            List<? extends IGuiAddon> addon = basicButtonAddon.getGuiAddons();
-            if (addon != null) addons.addAll(addon);
-        }
+//        for (PosButton basicButtonAddon : basicButtonAddons) { TODO
+//            List<? extends IGuiAddon> addon = basicButtonAddon.getGuiAddons();
+//            if (addon != null) addons.addAll(addon);
+//        }
         return addons;
     }
 }

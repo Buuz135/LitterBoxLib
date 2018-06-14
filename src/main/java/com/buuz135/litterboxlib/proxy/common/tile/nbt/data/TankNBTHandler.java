@@ -21,7 +21,7 @@ public class TankNBTHandler implements INBTHandler<FluidTank> {
 
     @Override
     public FluidTank readFromNBT(@Nonnull NBTTagCompound compound, @Nonnull String name, FluidTank currentValue) {
-        if (compound.hasKey(name)){
+        if (compound.hasKey(name)) {
             currentValue.readFromNBT(compound.getCompoundTag(name));
             return currentValue;
         }

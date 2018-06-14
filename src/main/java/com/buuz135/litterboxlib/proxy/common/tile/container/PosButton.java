@@ -1,12 +1,11 @@
 package com.buuz135.litterboxlib.proxy.common.tile.container;
 
-import com.buuz135.litterboxlib.proxy.common.client.gui.IGuiAddonProvider;
 import lombok.Getter;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.function.Predicate;
 
-public abstract class PosButton implements IGuiAddonProvider {
+public class PosButton {
 
     @Getter
     private final int posX;
@@ -39,6 +38,6 @@ public abstract class PosButton implements IGuiAddonProvider {
     }
 
     public void onButtonClicked(NBTTagCompound information) {
-        serverPredicate.test(information);
+        if (serverPredicate != null) serverPredicate.test(information);
     }
 }

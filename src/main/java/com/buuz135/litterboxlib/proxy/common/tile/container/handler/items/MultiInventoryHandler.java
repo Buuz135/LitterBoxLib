@@ -3,12 +3,14 @@ package com.buuz135.litterboxlib.proxy.common.tile.container.handler.items;
 import com.buuz135.litterboxlib.proxy.common.client.gui.IGuiAddonProvider;
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.IGuiAddon;
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.SlotsGuiAddon;
+import com.buuz135.litterboxlib.proxy.common.client.gui.addon.button.FacingHandlerGuiAddon;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -46,7 +48,7 @@ public class MultiInventoryHandler implements IGuiAddonProvider {
     public MultiInvCapabilityHandler getCapabilityForSide(EnumFacing facing) {
         List<PosInventoryHandler> handlers = new ArrayList<>();
         for (PosInventoryHandler posInventoryHandler : inventoryHandlers.values()) {
-            if (posInventoryHandler.getFacingModes().containsKey(facing) && posInventoryHandler.getFacingModes().get(facing).isAllowsConnection())
+            if (posInventoryHandler.getFacingModes().containsKey(facing) && posInventoryHandler.getFacingModes().get(facing).allowsConnection())
                 handlers.add(posInventoryHandler);
         }
         return new MultiInvCapabilityHandler(handlers);
@@ -59,8 +61,11 @@ public class MultiInventoryHandler implements IGuiAddonProvider {
     @Override
     public List<IGuiAddon> getGuiAddons() {
         List<IGuiAddon> addons = new ArrayList<>();
+        int i = 0;
         for (PosInventoryHandler handler : inventoryHandlers.values()) {
             addons.add(new SlotsGuiAddon(handler));
+            addons.add(new FacingHandlerGuiAddon(new Rectangle(8 + 16 * i, 66 + 18, 14, 14), handler));
+            ++i;
         }
         return addons;
     }

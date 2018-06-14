@@ -1,6 +1,7 @@
-package com.buuz135.litterboxlib.proxy.common.client.gui.addon;
+package com.buuz135.litterboxlib.proxy.common.client.gui.addon.button;
 
 import com.buuz135.litterboxlib.proxy.common.client.gui.GuiTile;
+import com.buuz135.litterboxlib.proxy.common.client.gui.addon.IGuiAddon;
 import lombok.Getter;
 
 public abstract class BasicGuiAddon implements IGuiAddon {

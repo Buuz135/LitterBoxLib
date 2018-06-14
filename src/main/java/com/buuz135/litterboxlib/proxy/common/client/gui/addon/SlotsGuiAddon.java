@@ -1,6 +1,7 @@
 package com.buuz135.litterboxlib.proxy.common.client.gui.addon;
 
 import com.buuz135.litterboxlib.proxy.common.client.gui.GuiTile;
+import com.buuz135.litterboxlib.proxy.common.client.gui.addon.button.BasicGuiAddon;
 import com.buuz135.litterboxlib.proxy.common.tile.container.handler.items.PosInventoryHandler;
 import javafx.util.Pair;
 
@@ -8,12 +9,12 @@ import java.util.List;
 
 public class SlotsGuiAddon extends BasicGuiAddon {
 
-    private static final Pair<Integer, Integer> SLOT_POS = new Pair<>(1, 167);
-    private static final Pair<Integer, Integer> SLOT_POS_FRAME = new Pair<>(20, 167);
+    private static final Pair<Integer, Integer> SLOT_POS = new Pair<>(1, 167 + 18);
+    private static final Pair<Integer, Integer> SLOT_POS_FRAME = new Pair<>(20, 167 + 18);
     private static final Pair<Integer, Integer> SLOT_SIZE = new Pair<>(18, 18);
 
-    private static final Pair<Integer, Integer> BIG_SLOT_POS = new Pair<>(1, 186);
-    private static final Pair<Integer, Integer> BIG_SLOT_POS_FRAME = new Pair<>(28, 186);
+    private static final Pair<Integer, Integer> BIG_SLOT_POS = new Pair<>(1, 186 + 18);
+    private static final Pair<Integer, Integer> BIG_SLOT_POS_FRAME = new Pair<>(28, 186 + 18);
     private static final Pair<Integer, Integer> BIG_SLOT_SIZE = new Pair<>(26, 26);
 
     private final PosInventoryHandler handler;
@@ -61,7 +62,7 @@ public class SlotsGuiAddon extends BasicGuiAddon {
         return false;
     }
 
-    private void renderSlots(GuiTile container, int renderingOffset, Pair<Integer, Integer> small_slot, Pair<Integer, Integer> big_slot){
+    private void renderSlots(GuiTile container, int renderingOffset, Pair<Integer, Integer> small_slot, Pair<Integer, Integer> big_slot) {
         for (int x = 0; x < handler.getXSize(); ++x) {
             for (int y = 0; y < handler.getYSize(); ++y) {
                 int hasToRenderLeftBar = (handler.isBigSlot() && x > 0 ? 1 : 0);

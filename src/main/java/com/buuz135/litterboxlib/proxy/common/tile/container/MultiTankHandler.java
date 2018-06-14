@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MultiTankHandler implements IFluidHandler, IGuiAddonProvider{
+public class MultiTankHandler implements IFluidHandler, IGuiAddonProvider {
 
     private List<PosFluidTank> tanks;
 
@@ -20,7 +20,7 @@ public class MultiTankHandler implements IFluidHandler, IGuiAddonProvider{
         tanks = new ArrayList<>();
     }
 
-    public void addTank(PosFluidTank tank){
+    public void addTank(PosFluidTank tank) {
         this.tanks.add(tank);
     }
 
@@ -32,8 +32,9 @@ public class MultiTankHandler implements IFluidHandler, IGuiAddonProvider{
     @Override
     public int fill(FluidStack resource, boolean doFill) {
         if (resource == null) return 0;
-        for (PosFluidTank tank : tanks){
-            if (tank.canFill() && tank.canFillFluidType(resource) && tank.fill(resource, false) != 0) return tank.fill(resource, doFill);
+        for (PosFluidTank tank : tanks) {
+            if (tank.canFill() && tank.canFillFluidType(resource) && tank.fill(resource, false) != 0)
+                return tank.fill(resource, doFill);
         }
         return 0;
     }
@@ -42,8 +43,9 @@ public class MultiTankHandler implements IFluidHandler, IGuiAddonProvider{
     @Override
     public FluidStack drain(FluidStack resource, boolean doDrain) {
         if (resource == null) return null;
-        for (PosFluidTank tank : tanks){
-            if (tank.canDrain() && tank.canDrainFluidType(resource) && tank.drain(resource, false) != null) return tank.drain(resource, doDrain);
+        for (PosFluidTank tank : tanks) {
+            if (tank.canDrain() && tank.canDrainFluidType(resource) && tank.drain(resource, false) != null)
+                return tank.drain(resource, doDrain);
         }
         return null;
     }
@@ -51,7 +53,7 @@ public class MultiTankHandler implements IFluidHandler, IGuiAddonProvider{
     @Nullable
     @Override
     public FluidStack drain(int maxDrain, boolean doDrain) {
-        for (PosFluidTank tank : tanks){
+        for (PosFluidTank tank : tanks) {
             if (tank.canDrain() && tank.drain(maxDrain, false) != null) return tank.drain(maxDrain, doDrain);
         }
         return null;

@@ -12,8 +12,10 @@ import java.util.function.Predicate;
 
 public class PosFluidTank extends FluidTank implements IFluidTankProperties {
 
-    @Getter private final int posX;
-    @Getter private final int posY;
+    @Getter
+    private final int posX;
+    @Getter
+    private final int posY;
     private Predicate<FluidStack> fillPredicate;
     private Predicate<FluidStack> drainPredicate;
 
@@ -25,17 +27,17 @@ public class PosFluidTank extends FluidTank implements IFluidTankProperties {
         this.drainPredicate = fluidStack1 -> true;
     }
 
-    public PosFluidTank setFillFilter(Predicate<FluidStack> filter){
+    public PosFluidTank setFillFilter(Predicate<FluidStack> filter) {
         this.fillPredicate = filter;
         return this;
     }
 
-    public PosFluidTank setDrainFilter(Predicate<FluidStack> filter){
+    public PosFluidTank setDrainFilter(Predicate<FluidStack> filter) {
         this.drainPredicate = filter;
         return this;
     }
 
-    public PosFluidTank setTile(TileEntity tile){
+    public PosFluidTank setTile(TileEntity tile) {
         this.tile = tile;
         return this;
     }
@@ -59,9 +61,9 @@ public class PosFluidTank extends FluidTank implements IFluidTankProperties {
     @Override
     protected void onContentsChanged() {
         super.onContentsChanged();
-        if (tile instanceof TileEntitySaving){
+        if (tile instanceof TileEntitySaving) {
             ((TileEntitySaving) tile).markForUpdate();
-        }else {
+        } else {
             tile.markDirty();
         }
     }

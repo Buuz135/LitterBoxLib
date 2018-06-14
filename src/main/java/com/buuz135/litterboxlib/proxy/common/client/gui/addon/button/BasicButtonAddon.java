@@ -1,11 +1,13 @@
-package com.buuz135.litterboxlib.proxy.common.client.gui.addon;
+package com.buuz135.litterboxlib.proxy.common.client.gui.addon.button;
 
 import com.buuz135.litterboxlib.Litterboxlib;
 import com.buuz135.litterboxlib.proxy.common.client.gui.GuiTile;
 import com.buuz135.litterboxlib.proxy.common.client.gui.IClickable;
-import com.buuz135.litterboxlib.proxy.common.client.gui.IGuiInformation;
 import com.buuz135.litterboxlib.proxy.common.network.ButtonClickedMessage;
 import com.buuz135.litterboxlib.proxy.common.tile.container.PosButton;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.init.SoundEvents;
 
 import java.util.List;
 
@@ -35,8 +37,9 @@ public class BasicButtonAddon extends BasicGuiAddon implements IClickable {
 
 
     @Override
-    public void handleClick(IGuiInformation information, int guiX, int guiY, int mouseX, int mouseY) {
-        Litterboxlib.NETWORK.sendToServer(new ButtonClickedMessage(information.getBlockPos(), button.getId()));
+    public void handleClick(GuiTile information, int guiX, int guiY, int mouseX, int mouseY) {
+        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+        Litterboxlib.NETWORK.sendToServer(new ButtonClickedMessage(information.getContainerTile().getTile().getPos(), button.getId()));
     }
 
     @Override

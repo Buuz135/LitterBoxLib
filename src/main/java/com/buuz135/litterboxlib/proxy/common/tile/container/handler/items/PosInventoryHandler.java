@@ -11,21 +11,32 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.function.BiPredicate;
 
 public class PosInventoryHandler extends ItemStackHandler implements IFacingHandler {
 
-    @Getter private final String name;
-    @Getter private final int xPos;
-    @Getter private final int yPos;
-    @Getter private int xSize;
-    @Getter private int ySize;
-    @Getter private TileEntity tileEntity;
-    @Getter private boolean colorEnabled;
-    @Getter private int color;
-    @Getter private boolean isBigSlot;
-    @Getter private BiPredicate<ItemStack, Integer> insertPredicate;
+    @Getter
+    private final String name;
+    @Getter
+    private final int xPos;
+    @Getter
+    private final int yPos;
+    @Getter
+    private int xSize;
+    @Getter
+    private int ySize;
+    @Getter
+    private TileEntity tileEntity;
+    @Getter
+    private boolean colorEnabled;
+    @Getter
+    private int color;
+    @Getter
+    private boolean isBigSlot;
+    @Getter
+    private BiPredicate<ItemStack, Integer> insertPredicate;
     @Getter
     private BiPredicate<ItemStack, Integer> extractPredicate;
     private HashMap<EnumFacing, FaceMode> facingModes;
@@ -67,12 +78,12 @@ public class PosInventoryHandler extends ItemStackHandler implements IFacingHand
         return this;
     }
 
-    public PosInventoryHandler setInputFilter(BiPredicate<ItemStack, Integer> predicate){
+    public PosInventoryHandler setInputFilter(BiPredicate<ItemStack, Integer> predicate) {
         this.insertPredicate = predicate;
         return this;
     }
 
-    public PosInventoryHandler setOutputFilter(BiPredicate<ItemStack, Integer> predicate){
+    public PosInventoryHandler setOutputFilter(BiPredicate<ItemStack, Integer> predicate) {
         this.extractPredicate = predicate;
         return this;
     }
@@ -107,6 +118,7 @@ public class PosInventoryHandler extends ItemStackHandler implements IFacingHand
         for (EnumFacing facing : facingModes.keySet()) {
             compound.setString(facing.getName(), facingModes.get(facing).name());
         }
+        nbt.setTag("FacingModes", compound);
         return nbt;
     }
 
@@ -124,5 +136,11 @@ public class PosInventoryHandler extends ItemStackHandler implements IFacingHand
     @Override
     public HashMap<EnumFacing, FaceMode> getFacingModes() {
         return facingModes;
+    }
+
+    @Override
+    public Rectangle getRectangle() {
+        int renderingOffset = isBigSlot ? 5 : 1;
+        return new Rectangle(xPos - renderingOffset - 3, yPos - renderingOffset - 3, 18 * xSize + renderingOffset * 2 + 3, 18 * ySize + renderingOffset * 2 + 3);
     }
 }

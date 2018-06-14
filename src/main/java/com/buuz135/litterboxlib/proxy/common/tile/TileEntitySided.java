@@ -1,12 +1,16 @@
 package com.buuz135.litterboxlib.proxy.common.tile;
 
+import com.buuz135.litterboxlib.proxy.common.block.BlockTileHorizontal;
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.IGuiAddon;
 import com.buuz135.litterboxlib.proxy.common.tile.container.ButtonHandler;
 import com.buuz135.litterboxlib.proxy.common.tile.container.MultiTankHandler;
 import com.buuz135.litterboxlib.proxy.common.tile.container.PosButton;
 import com.buuz135.litterboxlib.proxy.common.tile.container.PosFluidTank;
+import com.buuz135.litterboxlib.proxy.common.tile.container.handler.FaceMode;
+import com.buuz135.litterboxlib.proxy.common.tile.container.handler.IFacingHandler;
 import com.buuz135.litterboxlib.proxy.common.tile.container.handler.items.MultiInventoryHandler;
 import com.buuz135.litterboxlib.proxy.common.tile.container.handler.items.PosInventoryHandler;
+import lombok.Getter;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -19,6 +23,7 @@ import java.util.List;
 
 public class TileEntitySided extends TileEntitySaving {
 
+    @Getter
     private MultiInventoryHandler multiInventoryHandler;
     private MultiTankHandler multiTankHandler;
     private ButtonHandler buttonHandler;
@@ -28,7 +33,7 @@ public class TileEntitySided extends TileEntitySaving {
         multiInventoryHandler.addInventory(handler);
     }
 
-    public void addTank(PosFluidTank tank){
+    public void addTank(PosFluidTank tank) {
         if (multiTankHandler == null) multiTankHandler = new MultiTankHandler();
         multiTankHandler.addTank(tank);
     }
@@ -65,5 +70,36 @@ public class TileEntitySided extends TileEntitySaving {
         if (multiTankHandler != null) list.addAll(multiTankHandler.getGuiAddons());
         if (buttonHandler != null) list.addAll(buttonHandler.getGuiAddons());
         return list;
+    }
+
+    public IFacingHandler getHandlerFromName(String string) {
+        for (PosInventoryHandler handler : multiInventoryHandler.getHandlers()) {
+            if (handler.getName().equalsIgnoreCase(string)) return handler;
+        }
+        return null;
+    }
+
+    @Override
+    public void handleClientPacket(String id, NBTTagCompound information) {
+        super.handleClientPacket(id, information);
+        if (id.equalsIgnoreCase("SIDE_CHANGE")) {
+            IFacingHandler handler = getHandlerFromName(information.getString("Name"));
+            if (handler != null) {
+                EnumFacing facing = EnumFacing.byName(information.getString("Facing"));
+                FaceMode mode = FaceMode.values()[information.getInteger("Next")];
+                handler.getFacingModes().put(facing, mode);
+                updateNeigh();
+            }
+            markForUpdate();
+        }
+    }
+
+    public void updateNeigh() {
+        this.world.notifyNeighborsOfStateChange(this.pos, this.blockType, true);
+        this.world.notifyBlockUpdate(this.pos, this.world.getBlockState(pos), this.world.getBlockState(pos), 3);
+    }
+
+    public EnumFacing getFacingDirection() {
+        return this.world.getBlockState(pos).getValue(BlockTileHorizontal.FACING);
     }
 }

@@ -5,6 +5,7 @@ import com.buuz135.litterboxlib.annotation.RegisteringBlock;
 import com.buuz135.litterboxlib.annotation.RegisteringItem;
 import com.buuz135.litterboxlib.api.IRegisterable;
 import com.buuz135.litterboxlib.proxy.common.network.ButtonClickedMessage;
+import com.buuz135.litterboxlib.proxy.common.network.TileUpdateFromClientMessage;
 import com.buuz135.litterboxlib.util.AnnotationUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -37,6 +38,7 @@ public class CommonProxy {
         NetworkRegistry.INSTANCE.registerGuiHandler(Litterboxlib.INSTANCE, new GuiHandler());
         int id = 0;
         Litterboxlib.NETWORK.registerMessage(ButtonClickedMessage.Handler.class, ButtonClickedMessage.class, ++id, Side.SERVER);
+        Litterboxlib.NETWORK.registerMessage(TileUpdateFromClientMessage.Handler.class, TileUpdateFromClientMessage.class, ++id, Side.SERVER);
     }
 
     public void onInit(FMLInitializationEvent event) {
@@ -56,13 +58,13 @@ public class CommonProxy {
     public void registerItems(RegistryEvent.Register<Item> register) {
         ITEMS.forEach(blockIRegisterable -> {
             blockIRegisterable.registerObject(register.getRegistry());
-            if (FMLCommonHandler.instance().getSide() == Side.CLIENT){
+            if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
                 blockIRegisterable.registerRender();
             }
         });
         BLOCKS.forEach(blockIRegisterable -> {
             register.getRegistry().register(new ItemBlock((Block) blockIRegisterable).setRegistryName(((Block) blockIRegisterable).getRegistryName()));
-            if (FMLCommonHandler.instance().getSide() == Side.CLIENT){
+            if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
                 blockIRegisterable.registerRender();
             }
         });

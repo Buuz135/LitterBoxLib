@@ -1,7 +1,6 @@
 {
-  "parent": "litterboxlib:block/util_cube_glow_2_all",
+  "parent": "litterboxlib:block/base_block",
   "textures": {
-    "all": "litterboxlib:blocks/body",
-    "glow": "litterboxlib:blocks/frame"
+    "north": "litterboxlib:blocks/bioreactor_side"
   }
 }

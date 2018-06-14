@@ -38,7 +38,7 @@ public class ButtonClickedMessage implements IMessage {
     }
 
 
-    public static class Handler implements IMessageHandler<ButtonClickedMessage,IMessage>{
+    public static class Handler implements IMessageHandler<ButtonClickedMessage, IMessage> {
 
         @Override
         public IMessage onMessage(ButtonClickedMessage message, MessageContext ctx) {

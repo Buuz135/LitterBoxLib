@@ -2,7 +2,7 @@ package com.buuz135.litterboxlib.proxy.common.client.gui.addon;
 
 import com.buuz135.litterboxlib.proxy.common.client.gui.GuiTile;
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.button.BasicGuiAddon;
-import com.buuz135.litterboxlib.proxy.common.tile.container.PosFluidTank;
+import com.buuz135.litterboxlib.proxy.common.tile.container.capability.fluids.PosFluidTank;
 import javafx.util.Pair;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

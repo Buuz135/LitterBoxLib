@@ -3,12 +3,15 @@ package com.buuz135.litterboxlib.proxy.common.client.gui.addon.button;
 import com.buuz135.litterboxlib.proxy.common.client.gui.GuiTile;
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.IGuiAddon;
 import lombok.Getter;
+import lombok.Setter;
 
 public abstract class BasicGuiAddon implements IGuiAddon {
 
     @Getter
+    @Setter
     private int posX;
     @Getter
+    @Setter
     private int posY;
 
     public BasicGuiAddon(int posX, int posY) {

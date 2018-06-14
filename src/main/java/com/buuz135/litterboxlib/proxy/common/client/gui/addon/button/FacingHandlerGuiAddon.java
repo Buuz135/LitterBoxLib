@@ -96,7 +96,7 @@ public class FacingHandlerGuiAddon extends BasicGuiAddon implements IClickable {
     }
 
     @Override
-    public void handleClick(GuiTile information, int guiX, int guiY, int mouseX, int mouseY) {
+    public void handleClick(GuiTile information, int guiX, int guiY, int mouseX, int mouseY, int button) {
         for (IGuiAddon addon : new ArrayList<>(information.getAddonList())) {
             if (addon instanceof FacingHandlerGuiAddon && addon != this) {
                 ((FacingHandlerGuiAddon) addon).setClicked(information, false);
@@ -106,12 +106,11 @@ public class FacingHandlerGuiAddon extends BasicGuiAddon implements IClickable {
         if (clicked) {
             information.getContainerTile().removeChestInventory();
             EnumFacing relative = information.getContainerTile().getTile().getFacingDirection();
-            int i = 0;
             for (EnumFacing facing : EnumFacing.VALUES) {
                 if (!handler.getFacingModes().containsKey(facing)) continue;
                 FacingUtils.Sideness sideness = FacingUtils.getFacingRelative(relative, facing);
                 Point point = getPointFromFacing(sideness);
-                StateButtonAddon addon = new StateButtonAddon(new PosButton(point.x, point.y, 14, 14), FaceMode.NONE.getInfo(facing, FacingHandlerGuiAddon.this.handler.getName()), FaceMode.ENABLED.getInfo(facing, FacingHandlerGuiAddon.this.handler.getName()), FaceMode.PULL.getInfo(facing, FacingHandlerGuiAddon.this.handler.getName()), FaceMode.PUSH.getInfo(facing, FacingHandlerGuiAddon.this.handler.getName())) {
+                StateButtonAddon addon = new StateButtonAddon(new PosButton(point.x, point.y, 14, 14), FaceMode.NONE.getInfo(), FaceMode.ENABLED.getInfo(), FaceMode.PULL.getInfo(), FaceMode.PUSH.getInfo()) {
                     @Override
                     public int getState() {
                         IFacingHandler handler = information.getContainerTile().getTile().getHandlerFromName(FacingHandlerGuiAddon.this.handler.getName());
@@ -119,14 +118,17 @@ public class FacingHandlerGuiAddon extends BasicGuiAddon implements IClickable {
                     }
 
                     @Override
-                    public void handleClick(GuiTile gui, int guiX, int guiY, int mouseX, int mouseY) {
+                    public void handleClick(GuiTile gui, int guiX, int guiY, int mouseX, int mouseY, int mouse) {
                         StateButtonInfo info = getStateInfo();
                         if (info != null) {
-                            Litterboxlib.NETWORK.sendToServer(new TileUpdateFromClientMessage("SIDE_CHANGE", gui.getContainerTile().getTile().getPos(), info.getCompound()));
-                            NBTTagCompound information = info.getCompound();
-                            EnumFacing facing = EnumFacing.byName(information.getString("Facing"));
-                            FaceMode mode = FaceMode.values()[information.getInteger("Next")];
-                            handler.getFacingModes().put(facing, mode);
+                            NBTTagCompound compound = new NBTTagCompound();
+                            compound.setString("Facing", facing.getName());
+                            int faceMode = (getState() + (mouse == 0 ? 1 : -1)) % FaceMode.values().length;
+                            if (faceMode < 0) faceMode = FaceMode.values().length - 1;
+                            compound.setInteger("Next", faceMode);
+                            compound.setString("Name", handler.getName());
+                            Litterboxlib.NETWORK.sendToServer(new TileUpdateFromClientMessage("SIDE_CHANGE", gui.getContainerTile().getTile().getPos(), compound));
+                            handler.getFacingModes().put(facing, FaceMode.values()[faceMode]);
                             gui.getContainerTile().getTile().updateNeigh();
                         }
                     }
@@ -140,7 +142,6 @@ public class FacingHandlerGuiAddon extends BasicGuiAddon implements IClickable {
                 };
                 buttonAddons.add(addon);
                 information.getAddonList().add(addon);
-                ++i;
             }
         }
     }
@@ -157,4 +158,6 @@ public class FacingHandlerGuiAddon extends BasicGuiAddon implements IClickable {
             buttonAddons.clear();
         }
     }
+
+
 }

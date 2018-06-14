@@ -61,11 +61,9 @@ public class MultiInventoryHandler implements IGuiAddonProvider {
     @Override
     public List<IGuiAddon> getGuiAddons() {
         List<IGuiAddon> addons = new ArrayList<>();
-        int i = 0;
         for (PosInventoryHandler handler : inventoryHandlers.values()) {
             addons.add(new SlotsGuiAddon(handler));
-            addons.add(new FacingHandlerGuiAddon(new Rectangle(8 + 16 * i, 66 + 18, 14, 14), handler));
-            ++i;
+            addons.add(new FacingHandlerGuiAddon(new Rectangle(8, 66 + 18, 14, 14), handler));
         }
         return addons;
     }

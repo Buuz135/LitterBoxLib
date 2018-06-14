@@ -46,7 +46,7 @@ public abstract class StateButtonAddon extends BasicButtonAddon {
     }
 
     @Override
-    public void handleClick(GuiTile information, int guiX, int guiY, int mouseX, int mouseY) {
+    public void handleClick(GuiTile information, int guiX, int guiY, int mouseX, int mouseY, int mouse) {
 
     }
 

@@ -2,6 +2,7 @@ package com.buuz135.litterboxlib.proxy.common.client.gui;
 
 import com.buuz135.litterboxlib.Litterboxlib;
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.IGuiAddon;
+import com.buuz135.litterboxlib.proxy.common.client.gui.addon.button.FacingHandlerGuiAddon;
 import com.buuz135.litterboxlib.proxy.common.tile.TileEntitySided;
 import com.buuz135.litterboxlib.proxy.common.tile.container.ContainerTile;
 import lombok.Getter;
@@ -34,6 +35,13 @@ public class GuiTile extends GuiContainer {
         this.containerTile = inventorySlotsIn;
         this.ySize = 184;
         this.addonList = containerTile.getTile().getGuiAddons();
+        int facingConfigIndex = 0;
+        for (IGuiAddon addon : this.addonList) {
+            if (addon instanceof FacingHandlerGuiAddon) {
+                ((FacingHandlerGuiAddon) addon).setPosX(((FacingHandlerGuiAddon) addon).getPosX() + 16 * facingConfigIndex);
+                ++facingConfigIndex;
+            }
+        }
     }
 
     @Override
@@ -96,8 +104,9 @@ public class GuiTile extends GuiContainer {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
+        System.out.println(mouseButton);
         new ArrayList<>(addonList).stream().filter(iGuiAddon -> iGuiAddon instanceof IClickable && iGuiAddon.isInside(this, mouseX - x, mouseY - y))
-                .forEach(iGuiAddon -> ((IClickable) iGuiAddon).handleClick(this, x, y, mouseX, mouseY));
+                .forEach(iGuiAddon -> ((IClickable) iGuiAddon).handleClick(this, x, y, mouseX, mouseY, mouseButton));
     }
 
     public void drawSelectingOverlay(int x, int y, int width, int height) {

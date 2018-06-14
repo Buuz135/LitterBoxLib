@@ -37,9 +37,9 @@ public class BasicButtonAddon extends BasicGuiAddon implements IClickable {
 
 
     @Override
-    public void handleClick(GuiTile information, int guiX, int guiY, int mouseX, int mouseY) {
+    public void handleClick(GuiTile information, int guiX, int guiY, int mouseX, int mouseY, int button) {
         Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-        Litterboxlib.NETWORK.sendToServer(new ButtonClickedMessage(information.getContainerTile().getTile().getPos(), button.getId()));
+        Litterboxlib.NETWORK.sendToServer(new ButtonClickedMessage(information.getContainerTile().getTile().getPos(), this.button.getId()));
     }
 
     @Override

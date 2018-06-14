@@ -3,11 +3,11 @@ package com.buuz135.litterboxlib.proxy.common.tile;
 import com.buuz135.litterboxlib.proxy.common.block.BlockTileHorizontal;
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.IGuiAddon;
 import com.buuz135.litterboxlib.proxy.common.tile.container.ButtonHandler;
-import com.buuz135.litterboxlib.proxy.common.tile.container.MultiTankHandler;
 import com.buuz135.litterboxlib.proxy.common.tile.container.PosButton;
-import com.buuz135.litterboxlib.proxy.common.tile.container.PosFluidTank;
 import com.buuz135.litterboxlib.proxy.common.tile.container.capability.FaceMode;
 import com.buuz135.litterboxlib.proxy.common.tile.container.capability.IFacingHandler;
+import com.buuz135.litterboxlib.proxy.common.tile.container.capability.fluids.MultiTankHandler;
+import com.buuz135.litterboxlib.proxy.common.tile.container.capability.fluids.PosFluidTank;
 import com.buuz135.litterboxlib.proxy.common.tile.container.capability.items.MultiInventoryHandler;
 import com.buuz135.litterboxlib.proxy.common.tile.container.capability.items.PosInventoryHandler;
 import lombok.Getter;
@@ -51,7 +51,8 @@ public class TileEntitySided extends TileEntitySaving {
     public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && multiInventoryHandler != null && multiInventoryHandler.getCapabilityForSide(facing).getSlots() > 0)
             return true;
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && multiTankHandler != null) return true;
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && multiTankHandler != null && !multiTankHandler.getCapabilityForSide(facing).isEmpty())
+            return true;
         return super.hasCapability(capability, facing);
     }
 
@@ -60,7 +61,8 @@ public class TileEntitySided extends TileEntitySaving {
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(multiInventoryHandler.getCapabilityForSide(facing));
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) return (T) multiTankHandler;
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(multiTankHandler.getCapabilityForSide(facing));
         return super.getCapability(capability, facing);
     }
 
@@ -75,6 +77,9 @@ public class TileEntitySided extends TileEntitySaving {
     public IFacingHandler getHandlerFromName(String string) {
         for (PosInventoryHandler handler : multiInventoryHandler.getHandlers()) {
             if (handler.getName().equalsIgnoreCase(string)) return handler;
+        }
+        for (PosFluidTank posFluidTank : multiTankHandler.getTanks()) {
+            if (posFluidTank.getName().equalsIgnoreCase(string)) return posFluidTank;
         }
         return null;
     }

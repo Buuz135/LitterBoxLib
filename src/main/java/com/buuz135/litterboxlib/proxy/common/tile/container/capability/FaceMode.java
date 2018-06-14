@@ -1,4 +1,4 @@
-package com.buuz135.litterboxlib.proxy.common.tile.container.handler;
+package com.buuz135.litterboxlib.proxy.common.tile.container.capability;
 
 import com.buuz135.litterboxlib.proxy.common.client.gui.GuiTile;
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.button.StateButtonInfo;

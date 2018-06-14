@@ -4,7 +4,7 @@ import com.buuz135.litterboxlib.annotation.NBTSave;
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.PrettyColor;
 import com.buuz135.litterboxlib.proxy.common.tile.TileEntitySided;
 import com.buuz135.litterboxlib.proxy.common.tile.container.PosFluidTank;
-import com.buuz135.litterboxlib.proxy.common.tile.container.handler.items.PosInventoryHandler;
+import com.buuz135.litterboxlib.proxy.common.tile.container.capability.items.PosInventoryHandler;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ITickable;

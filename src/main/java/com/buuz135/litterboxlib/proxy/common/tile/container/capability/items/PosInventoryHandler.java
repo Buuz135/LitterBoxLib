@@ -1,8 +1,8 @@
-package com.buuz135.litterboxlib.proxy.common.tile.container.handler.items;
+package com.buuz135.litterboxlib.proxy.common.tile.container.capability.items;
 
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.PrettyColor;
-import com.buuz135.litterboxlib.proxy.common.tile.container.handler.FaceMode;
-import com.buuz135.litterboxlib.proxy.common.tile.container.handler.IFacingHandler;
+import com.buuz135.litterboxlib.proxy.common.tile.container.capability.FaceMode;
+import com.buuz135.litterboxlib.proxy.common.tile.container.capability.IFacingHandler;
 import lombok.Getter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

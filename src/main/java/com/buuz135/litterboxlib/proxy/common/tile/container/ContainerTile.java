@@ -1,7 +1,7 @@
 package com.buuz135.litterboxlib.proxy.common.tile.container;
 
 import com.buuz135.litterboxlib.proxy.common.tile.TileEntitySided;
-import com.buuz135.litterboxlib.proxy.common.tile.container.handler.items.PosInventoryHandler;
+import com.buuz135.litterboxlib.proxy.common.tile.container.capability.items.PosInventoryHandler;
 import lombok.Getter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

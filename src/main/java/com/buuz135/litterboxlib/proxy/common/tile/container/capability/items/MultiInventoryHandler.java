@@ -1,4 +1,4 @@
-package com.buuz135.litterboxlib.proxy.common.tile.container.handler.items;
+package com.buuz135.litterboxlib.proxy.common.tile.container.capability.items;
 
 import com.buuz135.litterboxlib.proxy.common.client.gui.IGuiAddonProvider;
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.IGuiAddon;

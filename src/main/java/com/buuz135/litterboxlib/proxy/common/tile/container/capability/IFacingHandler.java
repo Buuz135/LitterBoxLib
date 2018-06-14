@@ -1,4 +1,4 @@
-package com.buuz135.litterboxlib.proxy.common.tile.container.handler;
+package com.buuz135.litterboxlib.proxy.common.tile.container.capability;
 
 import net.minecraft.util.EnumFacing;
 

@@ -2,8 +2,8 @@ package com.buuz135.litterboxlib.proxy.common.tile.container.capability.fluids;
 
 import com.buuz135.litterboxlib.proxy.common.client.gui.IGuiAddonProvider;
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.IGuiAddon;
-import com.buuz135.litterboxlib.proxy.common.client.gui.addon.TankGuiAddon;
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.button.FacingHandlerGuiAddon;
+import com.buuz135.litterboxlib.proxy.common.client.gui.addon.capability.TankGuiAddon;
 import lombok.Getter;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;

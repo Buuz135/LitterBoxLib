@@ -5,15 +5,12 @@ import com.buuz135.litterboxlib.proxy.common.client.gui.addon.PrettyColor;
 import com.buuz135.litterboxlib.proxy.common.tile.TileEntitySided;
 import com.buuz135.litterboxlib.proxy.common.tile.container.capability.fluids.PosFluidTank;
 import com.buuz135.litterboxlib.proxy.common.tile.container.capability.items.PosInventoryHandler;
+import com.buuz135.litterboxlib.proxy.common.tile.container.capability.work.PosWorkBar;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ITickable;
-import net.minecraftforge.fluids.FluidRegistry;
 
-import java.util.Random;
-
-public class TileEntityTest extends TileEntitySided implements ITickable {
+public class TileEntityTest extends TileEntitySided {
 
     @NBTSave
     private int randomNumber;
@@ -27,6 +24,10 @@ public class TileEntityTest extends TileEntitySided implements ITickable {
     private PosFluidTank water;
     @NBTSave
     private PosFluidTank lava;
+    @NBTSave
+    private PosWorkBar firstBar;
+    @NBTSave
+    private PosWorkBar secondBar;
 
     public TileEntityTest() {
         randomNumber = 0;
@@ -38,10 +39,10 @@ public class TileEntityTest extends TileEntitySided implements ITickable {
 
         handler3 = new PosInventoryHandler("test3", 20 + 18 * 5 + 10, 30, 4).setRange(2, 2).setColor(PrettyColor.RED).setTile(this).setBigSlot().setOutputFilter((stack, integer) -> stack.isItemEqual(new ItemStack(Blocks.STONE)));
         addInventory(handler3);
-        water = new PosFluidTank(8000, 20 + 40, 20, "water").setTile(this).setFillFilter(fluidStack -> fluidStack.getFluid().equals(FluidRegistry.WATER)).setColor(EnumDyeColor.GREEN.getColorValue());
-        this.addTank(water);
-        lava = new PosFluidTank(8000, 40 + 40, 20, "lava").setTile(this).setFillFilter(fluidStack -> fluidStack.getFluid().equals(FluidRegistry.LAVA)).setColor(EnumDyeColor.CYAN.getColorValue());
-        this.addTank(lava);
+//        water = new PosFluidTank(8000, 20 + 40, 20, "water").setTile(this).setFillFilter(fluidStack -> fluidStack.getFluid().equals(FluidRegistry.WATER)).setColor(EnumDyeColor.GREEN.getColorValue());
+//        this.addTank(water);
+//        lava = new PosFluidTank(8000, 40 + 40, 20, "lava").setTile(this).setFillFilter(fluidStack -> fluidStack.getFluid().equals(FluidRegistry.LAVA)).setColor(EnumDyeColor.CYAN.getColorValue());
+//        this.addTank(lava);
 //
 //        PosButton button = new PosButton(10, 10, 16, 16) {
 //            @Override
@@ -54,16 +55,10 @@ public class TileEntityTest extends TileEntitySided implements ITickable {
 //            System.out.println("LAVA:" + lava.getFluidAmount());
 //            return true;
 //        }));
+        firstBar = new PosWorkBar(60, 20, 50).setTickingTime(1).setRunnable(() -> secondBar.increase(this.getWorld())).setColor(EnumDyeColor.CYAN.getColorValue()).setTile(this);
+        this.addWorkBar(firstBar);
+        secondBar = new PosWorkBar(80, 20, 50).setShouldTickIncrease(false).setRunnable(() -> System.out.println("FULL SECOND BAR")).setColor(EnumDyeColor.LIME.getColorValue()).setTile(this);
+        this.addWorkBar(secondBar);
     }
-
-    @Override
-    public void update() {
-        if (world.isRemote) return;
-        if (randomNumber == 0) {
-            randomNumber = new Random().nextInt();
-            this.markForUpdate();
-        }
-    }
-
 
 }

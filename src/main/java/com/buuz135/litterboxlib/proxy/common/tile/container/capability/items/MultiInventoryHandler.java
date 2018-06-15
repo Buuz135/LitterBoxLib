@@ -2,10 +2,9 @@ package com.buuz135.litterboxlib.proxy.common.tile.container.capability.items;
 
 import com.buuz135.litterboxlib.proxy.common.client.gui.IGuiAddonProvider;
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.IGuiAddon;
-import com.buuz135.litterboxlib.proxy.common.client.gui.addon.SlotsGuiAddon;
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.button.FacingHandlerGuiAddon;
+import com.buuz135.litterboxlib.proxy.common.client.gui.addon.capability.SlotsGuiAddon;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -26,23 +25,6 @@ public class MultiInventoryHandler implements IGuiAddonProvider {
 
     public void addInventory(PosInventoryHandler handler) {
         inventoryHandlers.put(handler.getName(), handler);
-    }
-
-    public NBTTagCompound serializeNBT() {
-        NBTTagCompound compound = new NBTTagCompound();
-        for (String key : inventoryHandlers.keySet()) {
-            compound.setTag(key, inventoryHandlers.get(key).serializeNBT());
-        }
-        return compound;
-    }
-
-    public void deserializeNBT(NBTTagCompound nbt) {
-        for (String key : nbt.getKeySet()) {
-            if (inventoryHandlers.containsKey(key)) {
-                PosInventoryHandler handler = inventoryHandlers.get(key);
-                handler.deserializeNBT(nbt.getCompoundTag(key));
-            }
-        }
     }
 
     public MultiInvCapabilityHandler getCapabilityForSide(EnumFacing facing) {

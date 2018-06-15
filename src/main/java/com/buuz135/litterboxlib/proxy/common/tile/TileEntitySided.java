@@ -10,9 +10,12 @@ import com.buuz135.litterboxlib.proxy.common.tile.container.capability.fluids.Mu
 import com.buuz135.litterboxlib.proxy.common.tile.container.capability.fluids.PosFluidTank;
 import com.buuz135.litterboxlib.proxy.common.tile.container.capability.items.MultiInventoryHandler;
 import com.buuz135.litterboxlib.proxy.common.tile.container.capability.items.PosInventoryHandler;
+import com.buuz135.litterboxlib.proxy.common.tile.container.capability.work.MultiWorkBarHandler;
+import com.buuz135.litterboxlib.proxy.common.tile.container.capability.work.PosWorkBar;
 import lombok.Getter;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -21,12 +24,13 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileEntitySided extends TileEntitySaving {
+public class TileEntitySided extends TileEntitySaving implements ITickable {
 
     @Getter
     private MultiInventoryHandler multiInventoryHandler;
     private MultiTankHandler multiTankHandler;
     private ButtonHandler buttonHandler;
+    private MultiWorkBarHandler multiWorkBarHandler;
 
     public void addInventory(PosInventoryHandler handler) {
         if (multiInventoryHandler == null) multiInventoryHandler = new MultiInventoryHandler();
@@ -41,6 +45,11 @@ public class TileEntitySided extends TileEntitySaving {
     public void addButton(PosButton buttonAddon) {
         if (buttonHandler == null) buttonHandler = new ButtonHandler();
         buttonHandler.addButton(buttonAddon);
+    }
+
+    public void addWorkBar(PosWorkBar workBar) {
+        if (multiWorkBarHandler == null) multiWorkBarHandler = new MultiWorkBarHandler();
+        multiWorkBarHandler.addBar(workBar);
     }
 
     public void handleButton(int id, NBTTagCompound compound) {
@@ -71,6 +80,7 @@ public class TileEntitySided extends TileEntitySaving {
         if (multiInventoryHandler != null) list.addAll(multiInventoryHandler.getGuiAddons());
         if (multiTankHandler != null) list.addAll(multiTankHandler.getGuiAddons());
         if (buttonHandler != null) list.addAll(buttonHandler.getGuiAddons());
+        if (multiWorkBarHandler != null) list.addAll(multiWorkBarHandler.getGuiAddons());
         return list;
     }
 
@@ -106,5 +116,11 @@ public class TileEntitySided extends TileEntitySaving {
 
     public EnumFacing getFacingDirection() {
         return this.world.getBlockState(pos).getValue(BlockTileHorizontal.FACING);
+    }
+
+    @Override
+    public void update() {
+        if (world.isRemote) return;
+        if (multiWorkBarHandler != null) multiWorkBarHandler.update(this.world);
     }
 }

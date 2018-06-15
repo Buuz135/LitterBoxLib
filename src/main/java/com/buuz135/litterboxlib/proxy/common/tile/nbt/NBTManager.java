@@ -24,6 +24,7 @@ public class NBTManager {
         handlerList.add(new StringNBTHandler());
         handlerList.add(new ItemStackHandlerNBTHandler());
         handlerList.add(new TankNBTHandler());
+        handlerList.add(new WorkBarNBTHandler());
         //handlerList.add(new ArrayListNBTHandler());
     }
 

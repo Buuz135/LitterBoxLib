@@ -1,4 +1,4 @@
-package com.buuz135.litterboxlib.proxy.common.client.gui.addon;
+package com.buuz135.litterboxlib.proxy.common.client.gui.addon.capability;
 
 import com.buuz135.litterboxlib.proxy.common.client.gui.GuiTile;
 import com.buuz135.litterboxlib.proxy.common.client.gui.addon.button.BasicGuiAddon;
@@ -23,7 +23,6 @@ public class SlotsGuiAddon extends BasicGuiAddon {
         super(handler.getXPos(), handler.getYPos());
         this.handler = handler;
     }
-
 
     @Override
     public void drawGuiContainerBackgroundLayer(GuiTile container, float partialTicks, int mouseX, int mouseY) {
